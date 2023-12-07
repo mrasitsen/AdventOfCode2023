@@ -9,12 +9,6 @@ import (
 	"strconv"
 )
 
-var cubeMap = map[string]int{
-	"red": 12,
-	"green": 13,
-	"blue": 14,
-}
-
 func readFromFile() *os.File {
 	file, err := os.Open("2.txt")
 	if err != nil {
@@ -38,25 +32,31 @@ func main(){
 
 	for scanner.Scan(){
 
-		isOk := true
+		var cubeMap = map[string]int{
+			"red": 0,
+			"green": 0,
+			"blue": 0,
+		}
+
 		text := scanner.Text()
 		slc := strings.FieldsFunc(text, split)
-		gameNumb := slc[1]
 
 		for i := 3; i < len(slc); i += 2 {
 
 			value, _ := strconv.Atoi(slc[i-1])
 
 			if value > cubeMap[slc[i]]{
-				isOk = false
-				break
+				cubeMap[slc[i]] = value
 			}
 		}  
 
-		if isOk {
-			num, _ := strconv.Atoi(gameNumb)
-			total = total + num
+		subTotal := 1
+
+		for _, value := range cubeMap {
+			subTotal = subTotal * value
 		}
+
+		total += subTotal
 		
 	}
 
