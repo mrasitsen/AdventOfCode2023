@@ -5,16 +5,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"unicode"
 )
 
 func readFromFile() *os.File {
-	fmt.Println("Test1")
 	file, err := os.Open("1.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	// defer file.Close()
-	fmt.Println("Test12")
 	return file
 }
 
@@ -22,11 +20,30 @@ func main() {
 
 	file := readFromFile()
 
+	var total int = 0
+
 	scanner := bufio.NewScanner(file)
-	fmt.Println("Test3")
 	for scanner.Scan() {
-		fmt.Println("Test1")
-		fmt.Println(scanner.Text())
+
+		var firstDigit int = 0
+		var lastDigit int = 0
+		isFirst := true
+
+		text := scanner.Text()
+		for _, char := range text {
+			if unicode.IsDigit(char) {
+				if isFirst {
+					firstDigit = int(char - '0')
+					isFirst = false
+				}
+				lastDigit = int(char - '0')
+			}
+
+		}
+		total = total + ((firstDigit * 10) + lastDigit)
 	}
+
+	fmt.Println(total)
+
 	file.Close()
 }
